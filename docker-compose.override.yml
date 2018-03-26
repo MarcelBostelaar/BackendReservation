@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  reserveerbackend:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"

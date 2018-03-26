@@ -1,0 +1,8 @@
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.deps.json
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.runtimeconfig.json
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.runtimeconfig.dev.json
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.dll
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csprojResolveAssemblyReference.cache
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csproj.CoreCompileInputs.cache
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfoInputs.cache
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfo.cs

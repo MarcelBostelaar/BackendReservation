@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  reserveerbackend:
+    image: reserveerbackend
+    build:
+      context: .
+      dockerfile: ReserveerBackend/Dockerfile
