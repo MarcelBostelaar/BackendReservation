@@ -15,6 +15,7 @@ namespace ReserveerBackend.Models
 
         public Boolean Functional { get; set; }
 
+        //public List<Room> Rooms { get; set; }
 
     }
 }

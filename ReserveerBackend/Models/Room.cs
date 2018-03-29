@@ -15,7 +15,9 @@ namespace ReserveerBackend.Models
 
         public int Capacity { get; set; }
 
-        public Item Items { get; set; }
+        //public Item Items { get; set; }
+
+        public List<Item> Items { get; set; }
 
         public int Temperature { get; set; }
 

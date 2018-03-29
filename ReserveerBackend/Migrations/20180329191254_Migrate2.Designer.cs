@@ -11,9 +11,10 @@ using System;
 namespace ReserveerBackend.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20180329191254_Migrate2")]
+    partial class Migrate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,11 +30,7 @@ namespace ReserveerBackend.Migrations
 
                     b.Property<string>("ItemName");
 
-                    b.Property<int?>("RoomId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
 
                     b.ToTable("Item");
                 });
@@ -69,6 +66,8 @@ namespace ReserveerBackend.Migrations
 
                     b.Property<int>("Capacity");
 
+                    b.Property<int?>("ItemId");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("Temperature");
@@ -76,6 +75,8 @@ namespace ReserveerBackend.Migrations
                     b.Property<DateTime>("TemperatureDateTime");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
 
                     b.ToTable("Room");
                 });
@@ -100,13 +101,6 @@ namespace ReserveerBackend.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("ReserveerBackend.Models.Item", b =>
-                {
-                    b.HasOne("ReserveerBackend.Models.Room")
-                        .WithMany("Items")
-                        .HasForeignKey("RoomId");
-                });
-
             modelBuilder.Entity("ReserveerBackend.Models.Reservation", b =>
                 {
                     b.HasOne("ReserveerBackend.Models.Room", "Room")
@@ -116,6 +110,13 @@ namespace ReserveerBackend.Migrations
                     b.HasOne("ReserveerBackend.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("ReserveerBackend.Models.Room", b =>
+                {
+                    b.HasOne("ReserveerBackend.Models.Item")
+                        .WithMany("Rooms")
+                        .HasForeignKey("ItemId");
                 });
 
             modelBuilder.Entity("ReserveerBackend.Models.User", b =>
