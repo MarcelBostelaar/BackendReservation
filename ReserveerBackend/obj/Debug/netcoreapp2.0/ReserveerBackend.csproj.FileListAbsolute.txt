@@ -6,3 +6,6 @@ E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2
 E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csproj.CoreCompileInputs.cache
 E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfoInputs.cache
 E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfo.cs
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.pdb
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.dll
+E:\ProjectsFolder\School\ReserveerBackend\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.pdb

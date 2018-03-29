@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ReserveerBackend
 {
@@ -28,7 +30,7 @@ namespace ReserveerBackend
             var connectionString = Configuration.GetConnectionString("ReserveerDBContext");
             services.AddDbContext<DBContext>(options =>
                 options.UseNpgsql(connectionString
-                    , b => b.MigrationsAssembly("reserveer-backend")));
+                    , b => b.MigrationsAssembly("ReserveerBackend")));
 
             services.AddMvc();
 

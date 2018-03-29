@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReserveerBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +14,39 @@ namespace ReserveerBackend
         {
 
         }
-        //public DbSet<User> User { get; set; }
-        /*public DbSet<UserSession> UserSession { get; set; }
-        public DbSet<Customer> Customer { get; set; }
-        public DbSet<Order> Order { get; set; }
-        public DbSet<DeliveryAddress> deliveryAddress { get; set; }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<DeelProduct> DeelProduct { get; set; }
 
-        public DbSet<ProductTaak> ProductTaak { get; set; }
-        public DbSet<TaakCommit> TaakCommit { get; set; }
-        public DbSet<Taak> Taak { get; set; }
-        public DbSet<Material> Material { get; set; }
-        public DbSet<Specificatie> Specificatie { get; set; }*/
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Room> Rooms { get; set; }
+
+        public DbSet<Reservation> Reservations { get; set; }
+
+        public DbSet<Item> Items { get; set; }
+
+        /*public DbSet<UserSession> UserSession { get; set; }
+    public DbSet<Customer> Customer { get; set; }
+    public DbSet<Order> Order { get; set; }
+    public DbSet<DeliveryAddress> deliveryAddress { get; set; }
+    public DbSet<Product> Product { get; set; }
+    public DbSet<DeelProduct> DeelProduct { get; set; }
+
+    public DbSet<ProductTaak> ProductTaak { get; set; }
+    public DbSet<TaakCommit> TaakCommit { get; set; }
+    public DbSet<Taak> Taak { get; set; }
+    public DbSet<Material> Material { get; set; }
+    public DbSet<Specificatie> Specificatie { get; set; }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().ToTable("User");
+
+            modelBuilder.Entity<Room>().ToTable("Room");
+
+            modelBuilder.Entity<Reservation>().ToTable("Reservation");
+
+            modelBuilder.Entity<Item>().ToTable("Item");
+
             /*modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<UserSession>().ToTable("UserSession");
             modelBuilder.Entity<Customer>().ToTable("Customer");
@@ -47,6 +65,5 @@ namespace ReserveerBackend
             modelBuilder.Entity<DeelProduct>()
                 .HasOne(e => e.Product);*/
         }
-
     }
 }

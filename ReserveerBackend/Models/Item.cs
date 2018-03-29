@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ReserveerBackend.Models
 {
-    public class User
+    public class Item
     {
         [Key]
         public int Id { get; set; }
 
-        public string Role { get; set; }
+        public string ItemName { get; set; }
 
-        public string Email { get; set; }
+        public Boolean Functional { get; set; }
 
-        public Boolean EmailNotification { get; set; }
+
     }
 }
