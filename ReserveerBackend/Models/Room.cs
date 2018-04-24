@@ -13,14 +13,22 @@ namespace ReserveerBackend.Models
 
         public string Name { get; set; }
 
+        public string Location { get; set; }
+
         public int Capacity { get; set; }
+
+        public bool TV { get; set; }
+
+        public bool Smartboard { get; set; }
+
+        public int Powersupply { get; set; }
 
         //public Item Items { get; set; }
 
-        public List<Item> Items { get; set; }
+        //public List<Item> Items { get; set; }
 
-        public int Temperature { get; set; }
+        //public int Temperature { get; set; }
 
-        public DateTime TemperatureDateTime { get; set; }
+        //public DateTime TemperatureDateTime { get; set; }
     }
 }

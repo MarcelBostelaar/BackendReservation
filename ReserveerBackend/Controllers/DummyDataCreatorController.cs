@@ -21,7 +21,7 @@ namespace ReserveerBackend.Controllers
 
         public void Generate()
         {
-            DummyDataCreator.CreateDummyData(db);
+            //DummyDataCreator.CreateDummyData(db);
         }
     }
 }
