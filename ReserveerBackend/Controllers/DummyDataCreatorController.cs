@@ -19,9 +19,11 @@ namespace ReserveerBackend.Controllers
             this.db = db;
         }
 
-        public void Generate()
+        [HttpGet]
+        public string Generate()
         {
-            //DummyDataCreator.CreateDummyData(db);
+            DummyDataCreator.CreateDummyData(db);
+            return "Succes";
         }
     }
 }
