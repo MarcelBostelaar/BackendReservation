@@ -74,6 +74,11 @@ namespace ReserveerBackend
 
             app.UseMvc();
 
+            //Controllers.DummyDataCreatorController.Generate();
+
+
+
+
         }
     }
 }
