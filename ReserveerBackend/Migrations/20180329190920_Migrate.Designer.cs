@@ -10,7 +10,7 @@ using System;
 
 namespace ReserveerBackend.Migrations
 {
-    [DbContext(typeof(DBContext))]
+    [DbContext(typeof(ReserveerDBContext))]
     [Migration("20180329190920_Migrate")]
     partial class Migrate
     {

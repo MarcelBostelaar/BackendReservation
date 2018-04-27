@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace ReserveerBackend
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("ReserveerDBContext");
-            services.AddDbContext<DBContext>(options =>
+            services.AddDbContext<ReserveerDBContext>(options =>
                 options.UseNpgsql(connectionString
                     , b => b.MigrationsAssembly("ReserveerBackend")));
 
@@ -52,6 +53,8 @@ namespace ReserveerBackend
             {
                 options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigins"));
             });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
         }
 

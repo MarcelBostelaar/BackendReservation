@@ -10,25 +10,22 @@ namespace ReserveerBackend.Models
     {
         [Key]
         public int Id { get; set; }
-
+        [Required]
         public string Name { get; set; }
-
+        [Required]
         public string Location { get; set; }
-
+        [Required]
         public int Capacity { get; set; }
-
+        [Required]
         public bool TV { get; set; }
-
+        [Required]
         public bool Smartboard { get; set; }
-
+        [Required]
         public int Powersupply { get; set; }
 
-        //public Item Items { get; set; }
-
-        //public List<Item> Items { get; set; }
-
-        //public int Temperature { get; set; }
-
-        //public DateTime TemperatureDateTime { get; set; }
+        public List<Reservation> Reservations { get; set; }
+        public List<Report> Reports { get; set; }
+        public List<Temperature> Temperatures { get; set; }
+        public List<Whiteboard> Whiteboards { get; set; }
     }
 }

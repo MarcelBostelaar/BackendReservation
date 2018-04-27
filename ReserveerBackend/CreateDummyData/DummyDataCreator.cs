@@ -8,7 +8,7 @@ namespace ReserveerBackend.CreateDummyData
 {
     public class DummyDataCreator
     {
-        public static void CreateDummyData(DBContext db)
+        public static void CreateDummyData(ReserveerDBContext db)
         {
             var RNG = new Random();
             for (int i = 0; i < 10; i++)

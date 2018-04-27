@@ -12,8 +12,8 @@ namespace ReserveerBackend.Controllers
     [Route("api/Rooms")]
     public class RoomsController : Controller
     {
-        DBContext dbContext;
-        public RoomsController(DBContext context)
+        ReserveerDBContext dbContext;
+        public RoomsController(ReserveerDBContext context)
         {
             dbContext = context;
         }

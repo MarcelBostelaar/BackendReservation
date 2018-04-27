@@ -12,9 +12,9 @@ namespace ReserveerBackend.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly DBContext _context;
+        private readonly ReserveerDBContext _context;
 
-        public UsersController(DBContext context)
+        public UsersController(ReserveerDBContext context)
         {
             _context = context;
         }

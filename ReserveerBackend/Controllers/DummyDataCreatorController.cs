@@ -12,9 +12,9 @@ namespace ReserveerBackend.Controllers
     [Route("api/DummyDataCreator")]
     public class DummyDataCreatorController : Controller
     {
-        private readonly DBContext db;
+        private readonly ReserveerDBContext db;
 
-        public DummyDataCreatorController(DBContext db)
+        public DummyDataCreatorController(ReserveerDBContext db)
         {
             this.db = db;
         }

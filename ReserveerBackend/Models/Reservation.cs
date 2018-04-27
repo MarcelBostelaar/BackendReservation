@@ -10,19 +10,19 @@ namespace ReserveerBackend.Models
     {
         [Key]
         public int Id { get; set; }
-
+        [Required]
         public DateTime StartDate { get; set; }
-
+        [Required]
         public DateTime EndDate { get; set; }
-
-        public Boolean Active { get; set; }
-
+        [Required]
+        public bool Active { get; set; }
+        [Required]
+        public bool IsMutable { get; set; }
+        [Required]
+        public string Description { get; set; }
+        [Required]
         public Room Room { get; set; }
 
-        public User User { get; set; }
-
-        public List<User> Users { get; set; }
-
-
+        public List<Report> Reports { get; set; }
     }
 }
