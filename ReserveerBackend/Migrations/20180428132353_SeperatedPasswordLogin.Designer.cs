@@ -12,9 +12,10 @@ using System;
 namespace ReserveerBackend.Migrations
 {
     [DbContext(typeof(ReserveerDBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20180428132353_SeperatedPasswordLogin")]
+    partial class SeperatedPasswordLogin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,8 +140,6 @@ namespace ReserveerBackend.Migrations
                     b.Property<bool>("EmailNotification");
 
                     b.Property<string>("PasswordLoginUsername");
-
-                    b.Property<int>("Role");
 
                     b.HasKey("Id");
 

@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180428132251_SeperatedPasswordLogin.cs" />
+    <Compile Remove="Migrations\20180428132251_SeperatedPasswordLogin.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DTO\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

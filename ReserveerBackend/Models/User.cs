@@ -11,14 +11,21 @@ namespace ReserveerBackend.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Role { get; set; }
-        [Required]
-        public string Password { get; set; }
+        public Role Role { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
         public Boolean EmailNotification { get; set; }
 
         public List<Report> Reports { get; set; }
+        public UserPasswordLogin PasswordLogin { get; set; }
+    }
+
+    public enum Role
+    {
+        Student = 0,
+        Teacher = 1,
+        ServiceDesk = 2,
+        Admin = 3
     }
 }
