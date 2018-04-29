@@ -12,9 +12,10 @@ using System;
 namespace ReserveerBackend.Migrations
 {
     [DbContext(typeof(ReserveerDBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20180429130641_FixPKErrors")]
+    partial class FixPKErrors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,32 +24,42 @@ namespace ReserveerBackend.Migrations
 
             modelBuilder.Entity("ReserveerBackend.Models.Participant", b =>
                 {
-                    b.Property<int>("UserID");
-
-                    b.Property<int>("ReservationID");
+                    b.Property<string>("shadowid")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<bool>("IsOwner");
 
-                    b.HasKey("UserID", "ReservationID");
+                    b.Property<int>("ReservationId");
 
-                    b.HasIndex("ReservationID");
+                    b.Property<int>("UserId");
+
+                    b.HasKey("shadowid");
+
+                    b.HasIndex("ReservationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("ReserveerBackend.Models.ParticipantChange", b =>
                 {
-                    b.Property<int>("UserID");
-
-                    b.Property<int>("ReservationID");
+                    b.Property<int>("shadowid")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ChangeDate");
 
                     b.Property<bool>("OldIsOwner");
 
-                    b.HasKey("UserID", "ReservationID", "ChangeDate");
+                    b.Property<int>("ReservationId");
 
-                    b.HasIndex("ReservationID");
+                    b.Property<int>("UserId");
+
+                    b.HasKey("shadowid");
+
+                    b.HasIndex("ReservationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ParticipantChanges");
                 });
@@ -200,9 +211,13 @@ namespace ReserveerBackend.Migrations
 
                     b.Property<bool>("EmailNotification");
 
+                    b.Property<string>("PasswordLoginUsername");
+
                     b.Property<int>("Role");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PasswordLoginUsername");
 
                     b.ToTable("Users");
                 });
@@ -218,14 +233,9 @@ namespace ReserveerBackend.Migrations
                     b.Property<byte[]>("Salt")
                         .IsRequired();
 
-                    b.Property<int>("UserId");
-
                     b.HasKey("Username");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserPasswordLogins");
+                    b.ToTable("GetUserPasswordLogins");
                 });
 
             modelBuilder.Entity("ReserveerBackend.Models.Whiteboard", b =>
@@ -245,26 +255,26 @@ namespace ReserveerBackend.Migrations
             modelBuilder.Entity("ReserveerBackend.Models.Participant", b =>
                 {
                     b.HasOne("ReserveerBackend.Models.Reservation", "Reservation")
-                        .WithMany("Participants")
-                        .HasForeignKey("ReservationID")
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ReserveerBackend.Models.User", "User")
-                        .WithMany("Participants")
-                        .HasForeignKey("UserID")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ReserveerBackend.Models.ParticipantChange", b =>
                 {
                     b.HasOne("ReserveerBackend.Models.Reservation", "Reservation")
-                        .WithMany("ParticipantChanges")
-                        .HasForeignKey("ReservationID")
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ReserveerBackend.Models.User", "User")
-                        .WithMany("ParticipantChanges")
-                        .HasForeignKey("UserID")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -323,12 +333,11 @@ namespace ReserveerBackend.Migrations
                         .HasForeignKey("SensorId");
                 });
 
-            modelBuilder.Entity("ReserveerBackend.Models.UserPasswordLogin", b =>
+            modelBuilder.Entity("ReserveerBackend.Models.User", b =>
                 {
-                    b.HasOne("ReserveerBackend.Models.User", "User")
-                        .WithOne("PasswordLogin")
-                        .HasForeignKey("ReserveerBackend.Models.UserPasswordLogin", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("ReserveerBackend.Models.UserPasswordLogin", "PasswordLogin")
+                        .WithMany()
+                        .HasForeignKey("PasswordLoginUsername");
                 });
 
             modelBuilder.Entity("ReserveerBackend.Models.Whiteboard", b =>

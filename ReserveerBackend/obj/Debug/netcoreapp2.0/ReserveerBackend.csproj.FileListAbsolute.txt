@@ -20,7 +20,6 @@ C:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\Reservee
 C:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfo.cs
 C:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.dll
 C:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.pdb
-F:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csprojResolveAssemblyReference.cache
 F:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csproj.CoreCompileInputs.cache
 F:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfoInputs.cache
 F:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfo.cs

@@ -14,5 +14,7 @@ namespace ReserveerBackend.Models
         public byte[] HashedPassword { get; set; }
         [Required]
         public byte[] Salt { get; set; }
+        [Required]
+        public User User { get; set; }
     }
 }

@@ -33,6 +33,8 @@ namespace ReserveerBackend
                 options.UseNpgsql(connectionString
                     , b => b.MigrationsAssembly("ReserveerBackend")));
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -54,8 +56,6 @@ namespace ReserveerBackend
                 options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigins"));
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +74,8 @@ namespace ReserveerBackend
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ordersysteem V1");
             });
+
+            app.UseAuthentication();
 
             app.UseMvc();
 

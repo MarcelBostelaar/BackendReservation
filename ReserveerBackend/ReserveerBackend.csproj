@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20180428132251_SeperatedPasswordLogin.cs" />
     <Compile Remove="Migrations\20180428132251_SeperatedPasswordLogin.Designer.cs" />
+    <Compile Remove="Migrations\20180429144822_testmigration.cs" />
+    <Compile Remove="Migrations\20180429144822_testmigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.0.1" />
