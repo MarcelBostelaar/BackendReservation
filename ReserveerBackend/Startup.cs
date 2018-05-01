@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,8 +34,14 @@ namespace ReserveerBackend
                 options.UseNpgsql(connectionString
                     , b => b.MigrationsAssembly("ReserveerBackend")));
 
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("AdminOnly", policy =>
+            //                      policy.RequireClaim(OpenIdConnectConstants.Claims.Role, "Admin"));
+            //});
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-
+            services.AddAuthorization(Authorization.AddUserAuthenticationPolicies());
+            services.AddSingleton<IAuthorizationHandler, MinimumRoleHandler>();
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -74,8 +81,6 @@ namespace ReserveerBackend
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ordersysteem V1");
             });
-
-            app.UseAuthentication();
 
             app.UseMvc();
 

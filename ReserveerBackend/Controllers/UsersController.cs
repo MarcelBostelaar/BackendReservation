@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,15 +26,35 @@ namespace ReserveerBackend.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create(string Username, string Password, string email)
+        //[Authorize(Roles ="3")]
+        public async Task<IActionResult> Create(string Username, string Password, string email, string role)
         {
-            if(String.IsNullOrEmpty(Username) || String.IsNullOrEmpty(Password) || String.IsNullOrEmpty(email))
+            if(String.IsNullOrEmpty(Username) || String.IsNullOrEmpty(Password) || String.IsNullOrEmpty(email) || String.IsNullOrEmpty(role))
             {
                 Response.StatusCode = 400;
                 return Content("Fields not filled in");
             }
+            Role _role = Role.Student;
+            switch (role)
+            {
+                case "Student":
+                    _role = Role.Student;
+                    break;
+                case "Admin":
+                    _role = Role.Admin;
+                    break;
+                case "ServiceDesk":
+                    _role = Role.ServiceDesk;
+                    break;
+                case "Teacher":
+                    _role = Role.Teacher;
+                    break;
+                default:
+                    Response.StatusCode = 400;
+                    return Content("Role is invalid");
+            }
             var newuser = new User();
-            newuser.Role = Models.Role.Student;
+            newuser.Role = _role;
             newuser.Email = email;
             newuser.EmailNotification = false;
             newuser.PasswordLogin = PasswordLoginUtilities.GenerateNewLogin(Username, Password);

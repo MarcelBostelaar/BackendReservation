@@ -54,15 +54,8 @@ namespace ReserveerBackend.Controllers
             }
 
             var userdata = first.User;
-            
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, name),
-                new Claim(ClaimTypes.Role, userdata.Role.ToString()),
-                new Claim(ClaimTypes.Email, userdata.Email),
-                new Claim("Emailnotification", userdata.EmailNotification.ToString()),
-                new Claim("ID", userdata.Id.ToString())
-            }, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var identity = userdata.ToClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
