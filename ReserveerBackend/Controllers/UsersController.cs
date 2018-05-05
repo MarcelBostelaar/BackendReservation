@@ -22,11 +22,10 @@ namespace ReserveerBackend.Controllers
         {
             _context = context;
         }
-        // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
-        //[Authorize(Roles ="3")]
+        [Route("CreateUsernamePassword")]
+        [Authorize(Roles = Authorization.AdminOrHigher)]
         public async Task<IActionResult> Create(string Username, string Password, string email, string role)
         {
             if(String.IsNullOrEmpty(Username) || String.IsNullOrEmpty(Password) || String.IsNullOrEmpty(email) || String.IsNullOrEmpty(role))
@@ -34,35 +33,59 @@ namespace ReserveerBackend.Controllers
                 Response.StatusCode = 400;
                 return Content("Fields not filled in");
             }
+            Role? castrole = Authorization.FromString(role);
             Role _role = Role.Student;
-            switch (role)
+            if (!castrole.HasValue)
             {
-                case "Student":
-                    _role = Role.Student;
-                    break;
-                case "Admin":
-                    _role = Role.Admin;
-                    break;
-                case "ServiceDesk":
-                    _role = Role.ServiceDesk;
-                    break;
-                case "Teacher":
-                    _role = Role.Teacher;
-                    break;
-                default:
-                    Response.StatusCode = 400;
-                    return Content("Role is invalid");
+                Response.StatusCode = 400;
+                return Content("Role is invalid");
             }
+            else
+                _role = castrole.Value;
             var newuser = new User();
             newuser.Role = _role;
             newuser.Email = email;
             newuser.EmailNotification = false;
             newuser.PasswordLogin = PasswordLoginUtilities.GenerateNewLogin(Username, Password);
             newuser.PasswordLogin.User = newuser;
+
+            if (DoesUserExist(newuser.PasswordLogin))
+            {
+                Response.StatusCode = 409;
+                return Content("User already exists");
+            }
+
             _context.Users.Add(newuser);
             _context.UserPasswordLogins.Add(newuser.PasswordLogin);
             _context.SaveChanges();
             return Content(string.Format("Succesfully registered user with username: {0}", Username));
+        }
+
+        [HttpPost]
+        [Route("GetUsers")]
+        [Authorize(Roles = Authorization.ServiceOrHigher)]
+        public IEnumerable<User> GetUsers(string Username, string email, string role, int? Id, bool? emailnotifications)
+        {
+            var users = _context.Users.AsQueryable();
+            if (!String.IsNullOrEmpty(Username))
+                users = users.Where(x => x.PasswordLogin.Username == Username);
+            if (!String.IsNullOrEmpty(email))
+                users = users.Where(x => x.Email == email);
+            var castrole = Authorization.FromString(role);
+            if (castrole.HasValue)
+                users = users.Where(x => x.Role == castrole.Value);
+            if (Id.HasValue)
+                users = users.Where(x => x.Id == Id.Value);
+            if (emailnotifications.HasValue)
+                users = users.Where(x => x.EmailNotification == emailnotifications.Value);
+            return users;
+        }
+
+        private bool DoesUserExist(UserPasswordLogin userlogin)
+        {
+            if (_context.UserPasswordLogins.Find(userlogin.Username) == null)
+                return false;
+            return true;
         }
     }
 }

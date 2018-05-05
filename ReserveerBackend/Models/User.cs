@@ -58,12 +58,4 @@ namespace ReserveerBackend.Models
             return FromClaimsIdentity(new ClaimsIdentity(claims));
         }
     }
-
-    public enum Role
-    {
-        Student = 0,
-        Teacher = 1,
-        ServiceDesk = 2,
-        Admin = 3
-    }
 }

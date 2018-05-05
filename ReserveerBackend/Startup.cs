@@ -34,14 +34,11 @@ namespace ReserveerBackend
                 options.UseNpgsql(connectionString
                     , b => b.MigrationsAssembly("ReserveerBackend")));
 
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("AdminOnly", policy =>
-            //                      policy.RequireClaim(OpenIdConnectConstants.Claims.Role, "Admin"));
-            //});
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-            services.AddAuthorization(Authorization.AddUserAuthenticationPolicies());
-            services.AddSingleton<IAuthorizationHandler, MinimumRoleHandler>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.LoginPath = "/api/Placeholder/notloggedin";
+                    options.AccessDeniedPath = "/api/Placeholder/unauthorized";
+                });
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -82,9 +79,10 @@ namespace ReserveerBackend
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ordersysteem V1");
             });
 
+            app.UseAuthentication();
+
             app.UseMvc();
 
-            //Controllers.DummyDataCreatorController.Generate();
 
 
 
