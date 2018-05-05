@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,144 +11,111 @@ using ReserveerBackend.Models;
 
 namespace ReserveerBackend.Controllers
 {
+    [Produces("application/json")]
+    [Route("api/Reservations")]
+    [Authorize(Roles = Authorization.StudentOrHigher)]
     public class ReservationsController : Controller
     {
         private readonly ReserveerDBContext _context;
+        private readonly object ReservationLock = new object();
 
         public ReservationsController(ReserveerDBContext context)
         {
             _context = context;
         }
 
-        // GET: Reservations
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Reservations.ToListAsync());
-        }
-
-        // GET: Reservations/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var reservation = await _context.Reservations
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return View(reservation);
-        }
-
-        // GET: Reservations/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Reservations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,Active")] Reservation reservation)
+        [Route("Add")]
+        public IActionResult AddReservation(DateTime StartTime, DateTime EndTime, string Description, int RoomID, HashSet<int> Participants, int Room)
         {
-            if (ModelState.IsValid)
+            if (StartTime == null || EndTime == null || Description == null)
             {
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Response.StatusCode = 400;
+                return Content("Fields missing");
             }
-            return View(reservation);
-        }
-
-        // GET: Reservations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            if (StartTime > EndTime)
             {
-                return NotFound();
+                Response.StatusCode = 400;
+                return Content("StartTime is before EndTime");
             }
-
-            var reservation = await _context.Reservations.SingleOrDefaultAsync(m => m.Id == id);
-            if (reservation == null)
+            var room = _context.Rooms.Find(Room);
+            if (room == null)
             {
-                return NotFound();
-            }
-            return View(reservation);
-        }
-
-        // POST: Reservations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,Active")] Reservation reservation)
-        {
-            if (id != reservation.Id)
-            {
-                return NotFound();
+                Response.StatusCode = 400;
+                return Content("Room does not exist");
             }
 
-            if (ModelState.IsValid)
+            if (Participants == null)
+                Participants = new HashSet<int>();
+
+            var requesterID = int.Parse(User.FindFirst(Models.User._ID).Value);
+            var _participants = from x in Participants select _context.Users.Find(x);
+
+            if (!_participants.All(x => x != null))
             {
-                try
+                Response.StatusCode = 400;
+                return Content("A participant could not be found.");
+            }
+            var _owner = _context.Users.Find(requesterID);
+
+            lock (ReservationLock) //lock all intersection checking and reservation writing logic to prevent changes to the database during the checking phase
+            {
+                var intersections = FindIntersections(StartTime, EndTime);
+                if (intersections.Count() == 0) //No intersections with other reservations, add it
                 {
-                    _context.Update(reservation);
-                    await _context.SaveChangesAsync();
+                    return createreservation(StartTime, EndTime, Description, _owner, _participants, room);
                 }
-                catch (DbUpdateConcurrencyException)
+                if (!intersections.All(x => x.IsMutable == true)) //intersection with an immutable reservation
                 {
-                    if (!ReservationExists(reservation.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    Response.StatusCode = 400;
+                    return Content("Overlaps with an immutable reservation.");
                 }
-                return RedirectToAction(nameof(Index));
+                if (Authorization.AIsBOrHigher(_owner.Role, Role.ServiceDesk)) //service desk or higher can always forcibly add reservations
+                {
+                    return forceAddReservation(StartTime, EndTime, Description, _owner, _participants, room);
+                }
+                var _intersectionowners = (from x in intersections select x.Participants).SelectMany(x => x).Where(x => x.IsOwner).Select(x => x.UserID);
+                var _intersectionownerLevels = (from x in _intersectionowners select _context.Users.Find(x).Role);
+                if (!_intersectionownerLevels.All(x => Authorization.AIsHigherThanB(_owner.Role, x))) //intersections with reservation from people of higher or equal level
+                {
+                    Response.StatusCode = 400;
+                    return Content("Overlaps with a reservation with owner of equal level.");
+                }
+                return forceAddReservation(StartTime, EndTime, Description, _owner, _participants, room); //intersections with reservations from people with lower level
             }
-            return View(reservation);
         }
 
-        // GET: Reservations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        private IActionResult forceAddReservation(DateTime StartTime, DateTime EndTime, string Description, User Owner, IEnumerable<User> Participants, Room Room, bool IsMutable = true)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var reservation = await _context.Reservations
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return View(reservation);
+            throw new NotImplementedException();
         }
 
-        // POST: Reservations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        private IActionResult createreservation(DateTime StartTime, DateTime EndTime, string Description, User Owner, IEnumerable<User> Participants, Room Room, bool IsMutable = true)
         {
-            var reservation = await _context.Reservations.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Reservations.Remove(reservation);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            Participants = Participants.Where(x => x.Id != Owner.Id);
+
+            var reservation = new Reservation();
+            reservation.Active = true;
+            reservation.Description = Description;
+            reservation.StartDate = StartTime;
+            reservation.EndDate = EndTime;
+            reservation.IsMutable = IsMutable;
+            reservation.Room = Room;
+
+            var participantlist = (from x in Participants select new Participant(reservation, x, false)).ToList();
+            participantlist.Add(new Participant(reservation, Owner, true));
+            reservation.Participants = participantlist;
+
+            _context.Reservations.Add(reservation);
+            _context.SaveChanges();
+            return Content("Successfully added reservation");
         }
 
-        private bool ReservationExists(int id)
+        private IEnumerable<Reservation> FindIntersections(DateTime StartTime, DateTime EndTime)
         {
-            return _context.Reservations.Any(e => e.Id == id);
+            if (StartTime > EndTime)
+                throw new Exception("Starttime is later than endtime");
+            return _context.Reservations.AsQueryable().Where(x => !(x.StartDate > EndTime || x.EndDate < StartTime)).Include(x => x.IsMutable).Include(x => x.Participants);
         }
     }
 }

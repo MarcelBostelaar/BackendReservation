@@ -43,6 +43,15 @@ namespace ReserveerBackend
                 default: throw new NotImplementedException();
             }
         }
+
+        public static bool AIsBOrHigher(Role A, Role B)
+        {
+            return (int)A >= (int)B;
+        }
+        public static bool AIsHigherThanB(Role A, Role B)
+        {
+            return (int)A > (int)B;
+        }
     }
 
     public enum Role
