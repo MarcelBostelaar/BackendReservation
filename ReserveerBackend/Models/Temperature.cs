@@ -8,6 +8,14 @@ namespace ReserveerBackend.Models
 {
     public class Temperature
     {
+        public Temperature() { }
+        public Temperature(TemperatureSensor sensor, float value, Room room, DateTime time)
+        {
+            this.Sensor = sensor;
+            this.temperature = value;
+            this.Room = room;
+            this.DateTime = time;
+        }
         [Key]
         public TemperatureSensor Sensor { get; set; }
         [Key]
