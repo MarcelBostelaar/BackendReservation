@@ -9,6 +9,22 @@ namespace ReserveerBackend.Models
 {
     public class Report
     {
+        public Report() { }
+        public Report(Room room, User user, string Description)
+        {
+            this.Room = room;
+            this.User = user;
+            this.Description = Description;
+            this.ActionStatus = ActionStatus.Open;
+        }
+        public Report(Room room, User user, string Description, Reservation reservation) : this(room, user, Description)
+        {
+            this.Reservation = reservation;
+        }
+        public Report(Room room, User user, string Description, Reservation reservation, DateTime requestedEndTime) : this(room, user, Description, reservation)
+        {
+            this.RequestedEndTime = requestedEndTime;
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -22,7 +38,7 @@ namespace ReserveerBackend.Models
         public string Description { get; set; }
         [Required]
         public ActionStatus ActionStatus { get; set; }
-        [Required]
+        
         public DateTime RequestedEndTime { get; set; }
     }
     public enum ActionStatus
