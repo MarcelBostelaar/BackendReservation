@@ -17,6 +17,8 @@ namespace ReserveerBackend.Models
         public bool OldIsOwner { get; set; }
         [Required]
         public DateTime ChangeDate { get; set; }
+        [Required]
+        public DateTime Added { get; set; }
 
         public int UserID { get; set; }
         public int ReservationID { get; set; }

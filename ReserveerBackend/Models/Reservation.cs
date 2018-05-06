@@ -28,5 +28,10 @@ namespace ReserveerBackend.Models
         public List<Report> Reports { get; set; }
         public List<Participant> Participants { get; set; }
         public List<ParticipantChange> ParticipantChanges { get; set; }
+
+        public ReservationChange GenerateChangeCopy(User actor)
+        {
+            return new ReservationChange(Room, this, actor, StartDate, EndDate, Active, Description, DateTime.Now);
+        }
     }
 }
