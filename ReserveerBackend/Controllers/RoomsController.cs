@@ -12,17 +12,37 @@ namespace ReserveerBackend.Controllers
     [Route("api/Rooms")]
     public class RoomsController : Controller
     {
-        ReserveerDBContext dbContext;
+        ReserveerDBContext _context;
         public RoomsController(ReserveerDBContext context)
         {
-            dbContext = context;
+            _context = context;
         }
 
-
-        [HttpGet]
-        public IEnumerable<Room> Get()
+        [HttpPost]
+        public IEnumerable<Room> GetMatch(int? Id, string Name, string Location, int? MinCapacity, int? MaxCapacity, bool? TV, bool? Smartboard, int? MinPowersupply, int? MaxPowersupply)
         {
-            return dbContext.Rooms.ToList();
+            var validrooms = _context.Rooms.AsQueryable();
+            if (Id.HasValue)
+                return validrooms.Where(x => x.Id == Id.Value); //only one match possible
+            if (Name != null)
+                validrooms = validrooms.Where(x => x.Name.Contains(Name));
+            if(Location != null)
+                validrooms = validrooms.Where(x => x.Location.Contains(Location));
+            if (MinCapacity.HasValue)
+                validrooms = validrooms.Where(x => x.Capacity >= MinCapacity.Value);
+            if (MaxCapacity.HasValue)
+                validrooms = validrooms.Where(x => x.Capacity <= MaxCapacity.Value);
+            if (TV.HasValue)
+                validrooms = validrooms.Where(x => x.TV == TV.Value);
+            if (Smartboard.HasValue)
+                validrooms = validrooms.Where(x => x.Smartboard == Smartboard.Value);
+            if (MinPowersupply.HasValue)
+                validrooms = validrooms.Where(x => x.Powersupply >= MinPowersupply.Value);
+            if (MaxPowersupply.HasValue)
+                validrooms = validrooms.Where(x => x.Powersupply <= MaxPowersupply.Value);
+            return validrooms;
         }
+
+
     }
 }

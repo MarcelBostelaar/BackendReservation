@@ -27,6 +27,28 @@ namespace ReserveerBackend.Controllers
         }
 
         [HttpPost]
+        [Route("get")]
+        public IEnumerable<Reservation> GetMatch(int? Id, bool? isactive, bool? ismutable, string description, int? roomID, DateTime? after, DateTime? before)
+        {
+            var validReservations = _context.Reservations.AsQueryable();
+            if (Id.HasValue)
+                return validReservations.Where(x => x.Id == Id.Value); //only one match possible
+            if (isactive.HasValue)
+                validReservations = validReservations.Where(x => x.Active == isactive.Value);
+            if (ismutable.HasValue)
+                validReservations = validReservations.Where(x => x.IsMutable == ismutable.Value);
+            if (description != null)
+                validReservations = validReservations.Where(x => x.Description.Contains(description));
+            if (roomID.HasValue)
+                validReservations = validReservations.Where(x => x.Room.Id == roomID);
+            if (after.HasValue)
+                validReservations = validReservations.Where(x => x.EndDate >= after.Value);
+            if (before.HasValue)
+                validReservations = validReservations.Where(x => x.StartDate <= before.Value);
+            return validReservations;
+        }
+
+        [HttpPost]
         [Route("Participants/Add")]
         public IActionResult AddParticipants(List<Tuple<int, bool>> UserIds, int reservationid)
         {
@@ -65,10 +87,41 @@ namespace ReserveerBackend.Controllers
         }
 
         [HttpDelete]
-        [Route("Participants/Add")]
-        public IActionResult RemoveParticipants(List<Tuple<int, bool>> UserIds, int reservationid)
+        [Route("Participants/Remove")]
+        public IActionResult RemoveParticipants(List<int> UserIds, int reservationid)
         {
-            throw new NotImplementedException();
+            var owner = Models.User.FromClaims(User.Claims);
+            var _reservation = _context.Reservations.Where(x => x.Id == reservationid).Include(x => x.Participants).Include(x => x.ParticipantChanges);
+            if (_reservation.Count() != 1)
+            {
+                Response.StatusCode = 400;
+                return Content("Could not find reservation");
+            }
+            var reservation = _reservation.First();
+            if (reservation.Participants.Where(x => x.UserID == owner.Id).Where(x => x.IsOwner).Count() != 1 || Authorization.AIsBOrHigher(owner.Role, Role.ServiceDesk))
+            {
+                Response.StatusCode = 401;
+                return Content("You are not the owner of this reservation, nor are you a service desk member or higher");
+            }
+
+            if (UserIds == null)
+            {
+                Response.StatusCode = 400;
+                return Content("UserId's cannot be empty");
+            }
+            var users = from id in UserIds select _context.Users.Find(id);
+            if (!users.All(x => x != null))
+            {
+                Response.StatusCode = 400;
+                return Content("A user could not be found");
+            }
+
+            foreach (var user in users)
+            {
+                RemoveUser(owner, user, reservation);
+            }
+            _context.SaveChanges();
+            return Ok(users.ToList());
         }
 
         private void InviteUser(User actor, User target, bool asOwner, Reservation reservation)
@@ -91,10 +144,28 @@ namespace ReserveerBackend.Controllers
                 return;
             }
         }
-        
 
-        //remove participants
-        //generic get
+        private void RemoveUser(User actor, User target, Reservation reservation)
+        {
+            Debug.WriteLine("Should have messaged user, but removed as participant instead. Please fix 'RemoveUser' in 'ReservationController.cs' if the messaging system is implemented.");
+            var participant = reservation.Participants.Find(x => x.UserID == target.Id);
+            if (participant == null)//user is not a participant
+                return;
+            _context.ParticipantChanges.Add(participant.GenerateChangeCopy(DateTime.Now));
+            reservation.Participants.Remove(participant);
+        }
+
+        private bool CanEditReservation(Reservation reservation, User actor)
+        {
+            if (reservation.Participants.Where(x => x.IsOwner).Where(x => x.UserID == actor.Id).Count() != 1)
+            {
+                if (!Authorization.AIsBOrHigher(actor.Role, Role.ServiceDesk))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         [HttpPost]
         [Route("Change")]
@@ -126,7 +197,7 @@ namespace ReserveerBackend.Controllers
                 {
                     if(!Authorization.AIsBOrHigher(actor.Role, Role.ServiceDesk))
                     {
-                        Response.StatusCode = 400;
+                        Response.StatusCode = 401;
                         return Content("You are not an owner of this reservation, nor are you a service desk employee or higher.");
                     }
                 }
@@ -313,7 +384,7 @@ namespace ReserveerBackend.Controllers
         {
             if (StartTime > EndTime)
                 throw new Exception("Starttime is later than endtime");
-            return _context.Reservations.AsQueryable().Where(x => !(x.StartDate >= EndTime || x.EndDate <= StartTime)).Include(x => x.IsMutable).Include(x => x.Participants);
+            return _context.Reservations.AsQueryable().Where(x => !(x.StartDate >= EndTime || x.EndDate <= StartTime)).Include(x => x.Participants);
         }
     }
 }
