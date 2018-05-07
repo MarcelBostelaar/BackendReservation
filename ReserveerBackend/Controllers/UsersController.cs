@@ -30,8 +30,8 @@ namespace ReserveerBackend.Controllers
         {
             if(String.IsNullOrEmpty(Username) || String.IsNullOrEmpty(Password) || String.IsNullOrEmpty(email) || String.IsNullOrEmpty(role))
             {
-                Response.StatusCode = 400;
-                return Content("Fields not filled in");
+                //Response.StatusCode = 400;
+                return BadRequest("Fields not filled in");
             }
             Role? castrole = Authorization.FromString(role);
             Role _role = Role.Student;
@@ -83,9 +83,7 @@ namespace ReserveerBackend.Controllers
 
         private bool DoesUserExist(UserPasswordLogin userlogin)
         {
-            if (_context.UserPasswordLogins.Find(userlogin.Username) == null)
-                return false;
-            return true;
+            return _context.UserPasswordLogins.First(u => u.Username == userlogin.Username) != null;
         }
     }
 }

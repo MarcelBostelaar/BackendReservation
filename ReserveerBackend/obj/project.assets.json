@@ -13296,25 +13296,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ontspanning\\.nuget\\packages\\": {},
+    "C:\\Users\\marcel\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Projects\\BackendReservation\\ReserveerBackend\\ReserveerBackend.csproj",
+      "projectUniqueName": "C:\\Projects\\BackendReservation\\ReserveerBackend\\ReserveerBackend.csproj",
       "projectName": "ReserveerBackend",
-      "projectPath": "F:\\Projects\\BackendReservation\\ReserveerBackend\\ReserveerBackend.csproj",
-      "packagesPath": "C:\\Users\\Ontspanning\\.nuget\\packages\\",
-      "outputPath": "F:\\Projects\\BackendReservation\\ReserveerBackend\\obj\\",
+      "projectPath": "C:\\Projects\\BackendReservation\\ReserveerBackend\\ReserveerBackend.csproj",
+      "packagesPath": "C:\\Users\\marcel\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\BackendReservation\\ReserveerBackend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Ontspanning\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\marcel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
       ],
