@@ -31,3 +31,14 @@ F:\Projects\BackendReservation\ReserveerBackend\bin\Debug\netcoreapp2.0\Reservee
 F:\Projects\BackendReservation\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.dll
 F:\Projects\BackendReservation\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.pdb
 F:\Projects\BackendReservation\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csprojResolveAssemblyReference.cache
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.deps.json
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.runtimeconfig.json
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.runtimeconfig.dev.json
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.dll
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\bin\Debug\netcoreapp2.0\ReserveerBackend.pdb
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csprojResolveAssemblyReference.cache
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.csproj.CoreCompileInputs.cache
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfoInputs.cache
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.AssemblyInfo.cs
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.dll
+C:\Projects\BackendReservationJenkinsTest\ReserveerBackend\obj\Debug\netcoreapp2.0\ReserveerBackend.pdb

@@ -13303,11 +13303,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\BackendReservation\\ReserveerBackend\\ReserveerBackend.csproj",
+      "projectUniqueName": "C:\\Projects\\BackendReservationJenkinsTest\\ReserveerBackend\\ReserveerBackend.csproj",
       "projectName": "ReserveerBackend",
-      "projectPath": "C:\\Projects\\BackendReservation\\ReserveerBackend\\ReserveerBackend.csproj",
+      "projectPath": "C:\\Projects\\BackendReservationJenkinsTest\\ReserveerBackend\\ReserveerBackend.csproj",
       "packagesPath": "C:\\Users\\marcel\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\BackendReservation\\ReserveerBackend\\obj\\",
+      "outputPath": "C:\\Projects\\BackendReservationJenkinsTest\\ReserveerBackend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
